@@ -1,12 +1,16 @@
 <?php
+
+$env = parse_ini_file('.env');
+
+
 // APPLICATION
 define('APPLICATION', 'Catalog');
 
 // HTTP
-define('HTTP_SERVER', 'http://localhost/opencart/');
+define('HTTP_SERVER', $env['HTTP_SERVER']);
 
 // DIR
-define('DIR_OPENCART', 'C:/xampp/htdocs/opencart/');
+define('DIR_OPENCART', $env['DIR_OPENCART']);
 define('DIR_APPLICATION', DIR_OPENCART . 'catalog/');
 define('DIR_EXTENSION', DIR_OPENCART . 'extension/');
 define('DIR_IMAGE', DIR_OPENCART . 'image/');
@@ -23,8 +27,8 @@ define('DIR_UPLOAD', DIR_STORAGE . 'upload/');
 
 // DB
 define('DB_DRIVER', 'mysqli');
-define('DB_HOSTNAME', 'localhost');
-define('DB_USERNAME', 'root');
+define('DB_HOSTNAME', $env['DB_HOST']);
+define('DB_USERNAME', $env['DB_USERNAME']);
 define('DB_PASSWORD', '');
 define('DB_DATABASE', 'opencart');
 define('DB_PORT', '3306');

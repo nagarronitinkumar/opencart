@@ -1,0 +1,26 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      php: 8.3
+    commands:
+      - ls -al
+      - echo This is test pre build commands...
+  build:
+    commands:
+      - echo 'Getting secret...'
+      - mv env.live .env
+      - export SECRETS=$(aws secretsmanager get-secret-value --secret-id db-details | jq --raw output '.SecretString')
+      - echo $SECRETS
+      - export APP_DB_USERNAME=$(echo $SECRETS | jq -r .APP_DB_USERNAME)
+      - sudo sed -i -e "s/APP_DB_USERNAME/$APP_DB_USERNAME/g" .env
+      - export APP_DB_PASSWORD=$(echo $SECRETS | jq -r .APP_DB_PASSWORD)
+      - sudo sed -i -e "s/APP_DB_PASSWORD/$APP_DB_PASSWORD/g" .env
+      - export APP_DB_HOST=$(echo $SECRETS | jq -r .APP_DB_HOST)
+      - sudo sed -i -e "s/APP_DB_HOST/$APP_DB_HOST/g" .env
+      - cat .env
+
+artifacts:
+  files:
+    - '**/*'
